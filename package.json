@@ -17,6 +17,14 @@
     "Snackify"
   ],
   "author": "Zubair Rahman",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamzubair6/showcase-done-pop"
+  },
+  "homepage": "https://showcase-done-pop.vercel.app/",
+  "bugs": {
+    "url": "https://codesandbox.io/p/github/iamzubair6/showcase-done-pop/master?import=true"
+  },
   "license": "MIT",
   "dependencies": {
     "@types/styled-components": "^5.1.34",

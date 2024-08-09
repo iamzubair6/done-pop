@@ -4,6 +4,14 @@
 
 The `toast-package` provides custom toast notifications for React applications, similar to `notistack`. It allows you to display notifications in a user-friendly manner.
 
+## Demo
+
+[View Demo](https://showcase-done-pop.vercel.app/)
+
+## CodeSandbox
+
+[Open in CodeSandbox](https://codesandbox.io/p/github/iamzubair6/showcase-done-pop/master?import=true)
+
 ## Installation
 
 To install the package, you can use either npm or yarn:
