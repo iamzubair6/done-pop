@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
+import styled from "styled-components";
 import ToastStyle from "./ToastStyle";
 
 interface ToastProviderProps {
@@ -29,6 +30,23 @@ interface ToasterContextProps {
 const ToasterContext = createContext<ToasterContextProps | undefined>(
   undefined
 );
+
+// Styled-component for the toaster container
+const ToasterContainer = styled.div<{
+  dense: boolean;
+  anchorOrigin: { horizontal: string; vertical: string };
+}>`
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: ${({ dense }) => (dense ? "4px" : "8px")};
+  padding: 16px;
+  ${({ anchorOrigin }) => `
+    ${anchorOrigin.vertical}: 0;
+    ${anchorOrigin.horizontal}: 0;
+  `}
+`;
 
 export const ToasterProvider: React.FC<ToastProviderProps> = ({
   children,
@@ -63,10 +81,7 @@ export const ToasterProvider: React.FC<ToastProviderProps> = ({
   return (
     <ToasterContext.Provider value={{ Toast }}>
       {children}
-      <div
-        className={`toaster-container ${dense ? "dense" : ""}`}
-        style={anchorOrigin as React.CSSProperties}
-      >
+      <ToasterContainer dense={dense} anchorOrigin={anchorOrigin}>
         {snacks.map((snack, index) => (
           <ToastStyle
             key={index}
@@ -80,7 +95,7 @@ export const ToasterProvider: React.FC<ToastProviderProps> = ({
             {snack.message}
           </ToastStyle>
         ))}
-      </div>
+      </ToasterContainer>
     </ToasterContext.Provider>
   );
 };
@@ -88,7 +103,7 @@ export const ToasterProvider: React.FC<ToastProviderProps> = ({
 export const useToaster = () => {
   const context = useContext(ToasterContext);
   if (!context) {
-    throw new Error("useSnackbar must be used within a ToasterProvider");
+    throw new Error("useToaster must be used within a ToasterProvider");
   }
   return context;
 };
