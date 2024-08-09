@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 
-// Define the keyframes for a smoother and fast slide-in animation
+// Define the keyframes for a fast slide-in animation
 const fancySlideIn = keyframes`
   0% {
     opacity: 0;
@@ -42,11 +42,14 @@ const ToastStyle = styled.div<SnackbarProps>`
   color: white;
   padding: ${({ dense }) => (dense ? "8px" : "16px")};
   border-radius: 4px;
-  animation: ${fancySlideIn} 0.15s cubic-bezier(0.25, 0.8, 0.25, 1),
-    ${fadeOut} 5s ease-in ${({ autoHideDuration }) => autoHideDuration - 400}ms;
+  animation: ${fancySlideIn} 0.15s cubic-bezier(0.25, 0.8, 0.25, 1) forwards,
+    ${fadeOut} 0.5s ease-in forwards
+      ${({ autoHideDuration }) => autoHideDuration - 500}ms;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   font-size: ${({ dense }) => (dense ? "0.875rem" : "1rem")};
   margin: 4px 0;
+  display: flex;
+  align-items: center;
 `;
 
 export default ToastStyle;
