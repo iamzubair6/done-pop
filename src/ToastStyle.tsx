@@ -1,27 +1,45 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 
-// Define the keyframes for a fast slide-in animation
-const fancySlideIn = keyframes`
-  0% {
+const bounceInUp = keyframes`
+  0% { 
+    transform: translate3d(0, 120%, 0);
     opacity: 0;
-    transform: translateY(100%) scale(0.5) rotate(-15deg);
   }
-  70% {
+  70% { 
+    transform: translate3d(0, -5px, 0);
+    opacity: 0.95;
+  }
+  100% { 
+    transform: translate3d(0, 0, 0);
     opacity: 1;
-    transform: translateY(0) scale(1.05) rotate(0);
-  }
-  100% {
-    transform: translateY(0) scale(1) rotate(0);
   }
 `;
 
-const fadeOut = keyframes`
-  from {
+const fadeOutUp = keyframes`
+  0% { 
+    transform: translate3d(0, 0, 0);
     opacity: 1;
   }
-  to {
+  100% { 
+    transform: translate3d(0, -120%, 0);
     opacity: 0;
   }
+`;
+
+const fadeOutDown = keyframes`
+  0% { 
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+  100% { 
+    transform: translate3d(0, 120%, 0);
+    opacity: 0;
+  }
+`;
+
+const progress = keyframes`
+  from { width: 100%; }
+  to { width: 0%; }
 `;
 
 interface SnackbarProps {
@@ -39,17 +57,54 @@ const ToastStyle = styled.div<SnackbarProps>`
       : variant === "info"
       ? "#2196f3"
       : "#ff9800"};
+  padding: 12px 24px;
+  border-radius: 6px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15), 0 3px 3px rgba(0, 0, 0, 0.08);
   color: white;
-  padding: ${({ dense }) => (dense ? "8px" : "16px")};
-  border-radius: 4px;
-  animation: ${fancySlideIn} 0.15s cubic-bezier(0.25, 0.8, 0.25, 1) forwards,
-    ${fadeOut} 0.5s ease-in forwards
-      ${({ autoHideDuration }) => autoHideDuration - 500}ms;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  font-size: ${({ dense }) => (dense ? "0.875rem" : "1rem")};
-  margin: 4px 0;
+  font-weight: 500;
+  font-size: 0.925rem;
   display: flex;
   align-items: center;
+  gap: 10px;
+  min-width: 300px;
+  max-width: 480px;
+  position: relative;
+  animation: ${bounceInUp} 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  margin: 8px 0;
+
+  &[data-state="exiting"] {
+    animation: ${fadeOutDown} 0.4s ease-out forwards;
+  }
+
+  .progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    transform-origin: left;
+    animation: ${progress} ${({ autoHideDuration }) => autoHideDuration}ms
+      linear;
+    will-change: width;
+  }
+
+  &:hover {
+    .progress-bar {
+      animation-play-state: paused;
+    }
+  }
 `;
 
-export default ToastStyle;
+const IconWrapper = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+`;
+
+export { ToastStyle, IconWrapper };
